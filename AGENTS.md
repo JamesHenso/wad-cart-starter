@@ -62,6 +62,7 @@ Run from the repository root.
 | Command | What it does | When to use it |
 | --- | --- | --- |
 | `npm test` | Runs the whole suite with `node --test` | Before every commit and before you claim anything works |
+| `npm run check` | Second gate: `node --check` over `src/cart.js` and `test/cart.test.js`, non-zero exit on a syntax error | Alongside `npm test`, and in CI |
 | `npm test -- --test-reporter=spec` | Same run, readable per-test output | When you need to see which test fails |
 | `npm test -- --test-name-pattern="empty cart"` | Runs only matching tests | While iterating on one rule |
 | `node --test test/cart.test.js` | Runs the single suite file directly | Fast loop; same result as `npm test` |

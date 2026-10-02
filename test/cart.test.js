@@ -59,3 +59,26 @@ test('the total is a number, not a string', () => {
   const options = { vatRate: 0.08, freeShipFrom: 500000, shipFee: 30000 }
   assert.equal(typeof cartTotal(items, options), 'number')
 })
+
+test('the subtotal, vat and shipping are rounded together, not separately', () => {
+  // Fractional amounts on purpose. With whole dong, rounding the total once and
+  // rounding each part first give the same number, so only a fraction of a dong
+  // can tell the two rules apart.
+  const items = [{ name: 'Sổ tay', price: 10, qty: 3 }]
+  const options = { vatRate: 0.08, freeShipFrom: 500000, shipFee: 0.4 }
+  // 30 + 2.4 + 0.4 = 32.8, rounded once gives 33; rounding the parts gives 32.
+  assert.equal(cartTotal(items, options), 33)
+})
+
+test('the items and the options are not mutated', () => {
+  const items = [
+    { name: 'Áo thun', price: 180000, qty: 2 },
+    { name: 'Sổ tay', price: 45000, qty: 1 },
+  ]
+  const options = { vatRate: 0.08, freeShipFrom: 500000, shipFee: 30000 }
+  const before = JSON.stringify({ items, options })
+
+  cartTotal(items, options)
+
+  assert.equal(JSON.stringify({ items, options }), before)
+})
